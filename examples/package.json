@@ -1,0 +1,13 @@
+{
+  "name": "examples",
+  "version": "1.0.0",
+  "description": "",
+  "main": "example.js",
+  "scripts": {
+    "basic-example": "node basic.js",
+    "deoptimize-example": "node deoptimize.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}

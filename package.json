@@ -1,0 +1,64 @@
+{
+	"name": "v8-insights",
+	"displayName": "v8-insights",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.64.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:v8-insights.run-file",
+		"onCommand:v8-insights.run-npm",
+		"onCommand:v8-insights.analyze",
+		"onCommand:v8-insights.cleanup"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "v8-insights.run-file",
+				"title": "V8 Insights Run File with instrumentation"
+			},
+			{
+				"command": "v8-insights.run-npm",
+				"title": "V8 Insights Run NPM command with instrumentation"
+			},
+			{
+				"command": "v8-insights.analyze",
+				"title": "V8 Insights Analyze and Start"
+			},
+			{
+				"command": "v8-insights.cleanup",
+				"title": "V8 Insights Cleanup"
+			}
+		],
+		"menus": {
+			"editor/context": [
+			  {
+				"when": "resourceLangId == javascript",
+				"command": "v8-insights.run-file",
+				"group": "navigation"
+			  },
+			  {
+				"when": "resourceLangId == javascript",
+				"command": "v8-insights.analyze",
+				"group": "navigation"
+			  }
+			]
+		  }
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.64.0",
+		"@types/glob": "^7.2.0",
+		"@types/node": "14.x",
+		"glob": "^7.2.0",
+		"typescript": "^4.5.4"
+	}
+}
