@@ -12,6 +12,12 @@ async function askForAnalyze() {
     if (pick) commands.executeCommand("v8-insights.analyze");
 }
 
+async function prepareInsightsFolder(folder: Uri) {
+    const insightsFolder = Uri.joinPath(folder, "./.v8-insights");
+    await workspace.fs.createDirectory(insightsFolder);
+    console.log(`Prepared insights folder at '${insightsFolder.toString()}'`);
+}
+
 export async function runNPMCommand() {
     const scripts = await getScripts();
 
@@ -27,10 +33,7 @@ export async function runNPMCommand() {
     const commandToRun = scripts.find(it => it.name === commandName);
     if (!commandToRun) return;
 
-
-    const insightsFolder = Uri.joinPath(commandToRun.folderPath, "./.v8-insights");
-    await workspace.fs.createDirectory(insightsFolder);
-    console.log(`Prepared insights folder at '${insightsFolder.toString()}'`);
+    await prepareInsightsFolder(commandToRun.folderPath);
 
     const instrumentedCommand = instrumentCommand(commandToRun.command);
 
@@ -47,6 +50,8 @@ export async function runFileCommand() {
         window.showErrorMessage(`Please open a JavaScript file to run this command`);
         return;
     }
+
+    await prepareInsightsFolder(workspace.getWorkspaceFolder(window.activeTextEditor!.document.uri)!.uri);
 
     const runner = window.createTerminal(`${file.split("/").pop()} - V8 Insights`);
     runner.show(true);
