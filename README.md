@@ -18,6 +18,9 @@ To trigger this either right-click _V8 Insights Analyze and Start_ or run the sa
 
 **Inspect -** When opening a JavaScript file, functions will be annotated with whether they were optimized or deoptimized, 
  also the compile time is shown. One can navigate to a function history, detailing all the events of the function, 
- or also view the compiled code in Assembly. 
+ or also view the compiled code in Assembly. The Assembly Editor automatically inserts labels for jump targets, which can be renamed through right-click. 
+ It also has some basic syntax highlighting, though installing another extension for x86 Assembly syntax support is recommended. 
+
+ ![Editing Compiled Assembly](./screenshot-compiled.png)
 
 **Cleanup -** To delete the .vs-insights logs, run the command _V8 Insights Cleanup_ from the command palette
