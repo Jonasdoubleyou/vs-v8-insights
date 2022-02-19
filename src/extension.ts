@@ -1,7 +1,7 @@
 import { ExtensionContext, commands, workspace, languages, TextDocument } from "vscode";
 import { analysisDone } from "./analyze";
 import { getLenses } from "./annotate";
-import { runNPMCommand, runFileCommand, analyzeCommand, cleanupCommand, showCompiledCommand, showHistoryCommand } from "./commands";
+import { runNPMCommand, runFileCommand, analyzeCommand, cleanupCommand, showCompiledCommand, showHistoryCommand, renameLabelCommand } from "./commands";
 import { compiledEditorProvider, historyEditorProvider } from "./editors";
 
 
@@ -15,7 +15,10 @@ export function activate(context: ExtensionContext) {
 
 		/* These commands can be run from the code lens on functions */
 		commands.registerCommand("v8-insights.show-compiled-code", showCompiledCommand),
-		commands.registerCommand("v8-insights.compilation-history", showHistoryCommand)
+		commands.registerCommand("v8-insights.compilation-history", showHistoryCommand),
+
+		/* These commands can be run from the compiled editor menu */
+		commands.registerCommand("v8-insights.set-label", renameLabelCommand)
 	];
 
 

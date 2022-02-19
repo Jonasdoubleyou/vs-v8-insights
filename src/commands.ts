@@ -1,6 +1,7 @@
 import { window, Uri, workspace, commands } from "vscode";
 import { analyze, FunctionInsights, FileInsights } from "./analyze";
-import { openCompiledEditor, openHistoryEditor } from "./editors";
+import { getLabel, getLabelName } from "./decompile";
+import { openCompiledEditor, openHistoryEditor, reloadCompiledEditor } from "./editors";
 import { getScripts, instrumentCommand, cleanupInstrumentationFolder } from "./instrument";
 
 async function askForAnalyze() {
@@ -96,4 +97,28 @@ export async function showHistoryCommand(fileInsights?: FileInsights, functionIn
 export async function cleanupCommand() {
     await cleanupInstrumentationFolder();
     window.showInformationMessage(`Successfully cleaned up the v8 insight traces`);
+}
+
+export async function renameLabelCommand() {
+    const location = window.activeTextEditor?.selection.active.line;
+    if (!location) {
+        window.showErrorMessage("Unknown file location");
+        return;
+    }
+
+    const label = getLabel(location);
+    if (!label) {
+        window.showErrorMessage("Please select a line with a label");
+        return;
+    }
+
+    const newLabel = await window.showInputBox({
+        ignoreFocusOut: true,
+        title: `new name for ${getLabelName(label)}`
+    });
+
+    if (!newLabel) return;
+
+    label.label = newLabel;
+    reloadCompiledEditor(label.editor);
 }

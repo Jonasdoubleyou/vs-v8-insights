@@ -43,17 +43,22 @@ type FunctionEvent = ({ at: number }) & (ParseEvent | CompileStartEvent | Compil
 function getInsightsFolder() {
     const currentFile = window.activeTextEditor?.document.uri;
     if (!currentFile) {
+        window.showErrorMessage("Failed to determine current file");
         throw new Error(`Open a file`);
     }
 
     const currentWorkspace = workspace.getWorkspaceFolder(currentFile);
-    if (!currentWorkspace) throw new Error(`No workspace found for file '${currentFile.toString()}`);
-    
+    if (!currentWorkspace) {
+        window.showErrorMessage("Failed to determine current workspace");
+        throw new Error(`No workspace found for file '${currentFile.toString()}`);
+    }
+
 	return Uri.joinPath(currentWorkspace!.uri, "./.v8-insights");
 }
 
 function readTrace(name: string) {
     const filePath = Uri.joinPath(getInsightsFolder(), name).toString().replace("file://", "");
+    console.log("creating read stream", filePath);
     return fs.createReadStream(filePath);
 }
 
@@ -77,6 +82,7 @@ export const analysisDone = new EventEmitter<void>();
 
 export async function analyze(): Promise<void> {
     insights.clear();
+    codeCache.clear();
 
     const functionsByLocation = new Map<string, FunctionInsights>();
     const functionsByCompiledLocation = new Map<string, FunctionInsights>();
@@ -181,9 +187,15 @@ export function getInsights(file: string) {
     return insights.get(file);
 }
 
-export async function getOptimizedCode(memoryLocation: string) {
-    const result: string[] = [];
+const codeCache = new Map<string, string[]>();
 
+export async function getOptimizedCode(memoryLocation: string) {
+    if (codeCache.has(memoryLocation)) {
+        console.log(`Read optimized code for ${memoryLocation} from cache`);
+        return codeCache.get(memoryLocation)!;
+    }
+
+    const result: string[] = [];
     console.log(`Reading optimized code from ${memoryLocation}`);
 
     let scan = false;
@@ -201,5 +213,6 @@ export async function getOptimizedCode(memoryLocation: string) {
         result.push(optLine)
     }
     
+    codeCache.set(memoryLocation, result);
     return result;
   }
