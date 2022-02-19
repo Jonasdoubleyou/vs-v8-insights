@@ -2,8 +2,10 @@
 	"name": "v8-insights",
 	"displayName": "v8-insights",
 	"description": "Analyze V8's optimizations from within VS Code",
-	"version": "0.0.1",
-	"repository": { "url": "https://github.com/Jonasdoubleyou/vs-v8-insights" },
+	"version": "0.0.2",
+	"repository": {
+		"url": "https://github.com/Jonasdoubleyou/vs-v8-insights"
+	},
 	"engines": {
 		"vscode": "^1.64.0"
 	},
@@ -43,21 +45,21 @@
 		],
 		"menus": {
 			"editor/context": [
-			  {
-				"when": "resourceLangId == javascript",
-				"command": "v8-insights.run-file",
-				"group": "navigation@1"
-			  },
-			  {
-				"when": "resourceLangId == javascript",
-				"command": "v8-insights.analyze",
-				"group": "navigation@2"
-			  },
-			  {
-				"when": "resourceScheme == v8-compiled",
-				"command": "v8-insights.set-label",
-				"group": "navigation@1"
-			  }
+				{
+					"when": "resourceLangId == javascript",
+					"command": "v8-insights.run-file",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == javascript",
+					"command": "v8-insights.analyze",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceScheme == v8-compiled",
+					"command": "v8-insights.set-label",
+					"group": "navigation@1"
+				}
 			]
 		}
 	},
