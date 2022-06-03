@@ -1,5 +1,7 @@
 # VSCode V8 Insights
 
+**This only works reliably with NodeJS v14!**
+
 Sometimes when benchmarking JavaScript I ask myself _How can this be that fast?_ ...
 
 Although V8 has rich debug logging, finding the right logs is really a challenge. 
